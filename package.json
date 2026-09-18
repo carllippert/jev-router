@@ -1,6 +1,6 @@
 {
-  "name": "jev-router",
-  "version": "0.1.0",
+  "name": "jevexpress",
+  "version": "0.1.1",
   "description": "Express with no routes. TypeSafe Jev picks which handler runs.",
   "type": "module",
   "main": "./dist/index.cjs",

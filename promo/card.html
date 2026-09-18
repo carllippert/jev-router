@@ -16,82 +16,60 @@
         width: 1080px;
         height: 1080px;
         box-sizing: border-box;
-        padding: 88px 84px 72px;
+        padding: 120px 100px 88px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        background: radial-gradient(1200px 700px at 80% 10%, #1a1408 0%, #070707 55%);
+        background: #070707;
       }
       h1 {
         margin: 0;
-        font-size: 92px;
-        line-height: 0.92;
-        letter-spacing: -0.045em;
+        font-size: 88px;
+        line-height: 1.02;
+        letter-spacing: -0.04em;
         font-weight: 700;
       }
       .sub {
-        margin-top: 22px;
+        margin-top: 28px;
         font-size: 28px;
-        color: #b8b2a6;
+        color: #9a9488;
         letter-spacing: 0.01em;
       }
       .flow {
-        display: grid;
-        grid-template-columns: 1fr auto 1fr;
-        gap: 28px;
+        display: flex;
         align-items: center;
+        justify-content: space-between;
+        gap: 40px;
       }
       .reqs,
       .out {
         font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace;
-        font-size: 22px;
-        line-height: 1.7;
+        font-size: 20px;
+        line-height: 2;
       }
       .reqs {
         color: #f0b429;
       }
-      .out {
-        color: #f4f1ea;
-      }
       .out .dim {
-        color: #8d877c;
+        color: #6f6a62;
       }
       .jev {
-        width: 112px;
-        height: 72px;
-        border: 2px solid #f0b429;
-        border-radius: 14px;
+        flex: 0 0 auto;
+        width: 96px;
+        height: 64px;
+        border: 1.5px solid #f0b429;
+        border-radius: 12px;
         display: grid;
         place-items: center;
         color: #f0b429;
         font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace;
-        font-size: 28px;
-        letter-spacing: 0.04em;
-        position: relative;
-      }
-      .jev::before,
-      .jev::after {
-        content: "";
-        position: absolute;
-        top: 50%;
-        width: 26px;
-        height: 2px;
-        background: #f0b429;
-      }
-      .jev::before {
-        right: 100%;
-        margin-right: 8px;
-      }
-      .jev::after {
-        left: 100%;
-        margin-left: 8px;
+        font-size: 24px;
+        letter-spacing: 0.06em;
       }
       .foot {
         font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace;
-        font-size: 24px;
-        color: #b8b2a6;
-        border-top: 1px solid #2a2a2a;
-        padding-top: 28px;
+        font-size: 20px;
+        color: #6f6a62;
       }
       .foot span {
         color: #f0b429;
@@ -101,8 +79,8 @@
   <body>
     <div class="card">
       <header>
-        <h1>There is no API.</h1>
-        <div class="sub">Express with no routes. Jev picks the handler.</div>
+        <h1>No Routes.<br />Only Jev.</h1>
+        <div class="sub">The world's first 0-route API</div>
       </header>
       <div class="flow">
         <div class="reqs">
@@ -112,13 +90,11 @@
         </div>
         <div class="jev">Jev</div>
         <div class="out">
-          <div class="dim">// one result</div>
-          listUsers()<br />
-          createUser()<br />
-          <span class="dim">confidence 0.97</span>
+          <span class="dim">//</span> listUsers()<br />
+          <span class="dim">//</span> createUser()
         </div>
       </div>
-      <div class="foot">$ <span>npm i jev-router</span></div>
+      <div class="foot">jev-router &nbsp;·&nbsp; $ <span>npm i jevexpress</span></div>
     </div>
   </body>
 </html>

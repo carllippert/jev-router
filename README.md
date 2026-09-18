@@ -2,11 +2,11 @@
 
 Express with no routes. [Jev](https://typesafe.ai) picks which handler runs.
 
-There is no `GET /users/:id`. Clients hit the origin with whatever path and body they want. Method, URL, and JSON are evidence. You register English intents, not paths. Jev’s Choice keys are the **function names** so the payload stays small.
+There is no `GET /users/:id`. Clients hit the origin. Method, path, and body are evidence. You register **English + a named function**. Jev’s Choice key is `function.name` so the payload stays small.
 
 ```ts
 import express from 'express'
-import { JevRouter } from 'jev-router'
+import { JevRouter } from 'jevexpress'
 
 const api = JevRouter()
 
@@ -23,11 +23,21 @@ api.handle('Create a user from JSON with name and/or email.', createUser)
 
 const app = express()
 app.use(express.json())
-app.get('/health', (_req, res) => res.json({ ok: true })) // never calls Jev
-app.use(api) // this is the API
+app.get('/health', (_req, res) => res.json({ ok: true }))
+app.use(api)
 ```
 
-These can all run the list-users intent:
+What Jev sees:
+
+```json
+{
+  "listUsers": "List users. Collection read; no body required.",
+  "createUser": "Create a user from JSON with name and/or email.",
+  "none_of_the_above": "The request does not match any registered handler."
+}
+```
+
+These can all run `listUsers`:
 
 ```bash
 curl http://localhost:3000/users
@@ -36,35 +46,33 @@ curl -X POST http://localhost:3000/ -H 'content-type: application/json' \
   -d '{"please":"list people"}'
 ```
 
+`handle` takes two arguments only: the intent string, then the function. There is no id and no path. Inline arrows have no `.name` — use `function listUsers(...)`.
+
 ## Install
 
 ```bash
-npm install jev-router express
+npm install jevexpress express
 ```
 
-Node 20+. Set an OpenRouter key — Jev is called through the [Decisions API](https://openrouter.ai/typesafe/jev-1.13), not chat completions:
+Node 20+. Jev is called through OpenRouter’s [Decisions API](https://openrouter.ai/typesafe/jev-1.13), not chat completions:
 
 ```bash
 export OPENROUTER_API_KEY=sk-or-...
 ```
 
-Pin `typesafe/jev-1.13` by default. Pass `model: '~typesafe/jev-latest'` to track current Jev.
+Default model is `typesafe/jev-1.13`. Pass `model: '~typesafe/jev-latest'` to track current Jev.
 
 ## How it works
 
-1. You register handlers with English (`handle(intent, namedFn)`). There is no path. The Choice key is `fn.name`.
-2. Every request (except `GET /health`) becomes `{ method, path, query, contentType, body }`.
-3. One Jev **Choice** runs over those function names plus `none_of_the_above`; the sentences are the criteria.
-4. If `confidence < 0.65` (configurable) or the pick is unmatched → **404** with the full probability dump.
-5. Otherwise that function runs. Jev cannot invent a new handler. Anonymous arrows have no name — use `function listUsers(...)`.
+1. `handle(intent, namedFn)` — no route table.
+2. Every request except `GET /health` becomes `{ method, path, query, contentType, body }`.
+3. One Choice over the function names + `none_of_the_above`. The sentences are the criteria.
+4. `confidence < 0.65` or `none_of_the_above` → **404** with the probability dump.
+5. Otherwise that function runs. Jev cannot invent a new handler.
 
-Headers on every Jev response:
+Headers: `X-Jev-Handler` (the function name), `X-Jev-Confidence`, `X-Jev-Model`.
 
-- `X-Jev-Handler`
-- `X-Jev-Confidence`
-- `X-Jev-Model`
-
-Put **auth in front** of `app.use(api)`. Do not let the model choose privileged handlers for anonymous traffic.
+Put **auth in front** of `app.use(api)`.
 
 ## Options
 
@@ -79,10 +87,10 @@ JevRouter({
 
 ## Limits
 
-- Choice is capped at **255** options. This library keeps 254 handlers + `none_of_the_above`.
-- Typical Jev latency is ~70–500ms. Fine for a weird RPC; not a hot REST path.
-- URLs are not the interface. OpenAPI and CDN cache keys do not apply.
-- Body is truncated (~4k chars). `authorization` / `cookie` are not sent as headers (they were never part of state).
+- Choice is capped at **255** options (254 handlers + `none_of_the_above`).
+- Typical Jev latency is ~70–500ms.
+- URLs are not the interface.
+- Body is truncated (~4k chars). Do not minify handler names away.
 
 ## Demo
 
@@ -93,4 +101,4 @@ npx tsx examples/demo.ts
 
 ## License
 
-MIT
+MIT — [github.com/carllippert/jev-router](https://github.com/carllippert/jev-router)
