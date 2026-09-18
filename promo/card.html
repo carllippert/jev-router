@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>jev-router</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        background: #070707;
+        color: #f4f1ea;
+        font-family: "IBM Plex Sans", "Helvetica Neue", sans-serif;
+      }
+      .card {
+        width: 1080px;
+        height: 1080px;
+        box-sizing: border-box;
+        padding: 88px 84px 72px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        background: radial-gradient(1200px 700px at 80% 10%, #1a1408 0%, #070707 55%);
+      }
+      h1 {
+        margin: 0;
+        font-size: 92px;
+        line-height: 0.92;
+        letter-spacing: -0.045em;
+        font-weight: 700;
+      }
+      .sub {
+        margin-top: 22px;
+        font-size: 28px;
+        color: #b8b2a6;
+        letter-spacing: 0.01em;
+      }
+      .flow {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        gap: 28px;
+        align-items: center;
+      }
+      .reqs,
+      .out {
+        font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+        font-size: 22px;
+        line-height: 1.7;
+      }
+      .reqs {
+        color: #f0b429;
+      }
+      .out {
+        color: #f4f1ea;
+      }
+      .out .dim {
+        color: #8d877c;
+      }
+      .jev {
+        width: 112px;
+        height: 72px;
+        border: 2px solid #f0b429;
+        border-radius: 14px;
+        display: grid;
+        place-items: center;
+        color: #f0b429;
+        font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+        font-size: 28px;
+        letter-spacing: 0.04em;
+        position: relative;
+      }
+      .jev::before,
+      .jev::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        width: 26px;
+        height: 2px;
+        background: #f0b429;
+      }
+      .jev::before {
+        right: 100%;
+        margin-right: 8px;
+      }
+      .jev::after {
+        left: 100%;
+        margin-left: 8px;
+      }
+      .foot {
+        font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+        font-size: 24px;
+        color: #b8b2a6;
+        border-top: 1px solid #2a2a2a;
+        padding-top: 28px;
+      }
+      .foot span {
+        color: #f0b429;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <header>
+        <h1>There is no API.</h1>
+        <div class="sub">Express with no routes. Jev picks the handler.</div>
+      </header>
+      <div class="flow">
+        <div class="reqs">
+          GET /please-list-the-people<br />
+          GET /users<br />
+          POST / {"email":"a@b.c"}
+        </div>
+        <div class="jev">Jev</div>
+        <div class="out">
+          <div class="dim">// one result</div>
+          listUsers()<br />
+          createUser()<br />
+          <span class="dim">confidence 0.97</span>
+        </div>
+      </div>
+      <div class="foot">$ <span>npm i jev-router</span></div>
+    </div>
+  </body>
+</html>
